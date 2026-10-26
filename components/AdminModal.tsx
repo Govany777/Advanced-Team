@@ -99,7 +99,7 @@ export function AdminModal({
   // Unlock Admin portal: Passcode is verified silently without leaking!
   const handleUnlock = (e: React.FormEvent) => {
     e.preventDefault()
-    if (passcode.trim() === '100100' || passcode.trim() === 'admin') {
+    if (passcode.trim() === '1911' || passcode.trim() === 'admin') {
       setUnlocked(true)
       setError('')
     } else {

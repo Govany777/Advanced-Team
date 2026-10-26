@@ -395,7 +395,7 @@ export function LoginPage({
                   className="inline-flex items-center gap-1 font-bold text-cyan-400 hover:underline"
                 >
                   <Shield className="size-3.5 text-amber-400" />
-                  <span>بوابة الليدر والمشرف (كلمة سر 100100) 🛡️</span>
+                  <span>بوابة الليدر والمشرف (كلمة سر 1911) 🛡️</span>
                 </button>
               </div>
             </form>

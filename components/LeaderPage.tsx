@@ -125,11 +125,11 @@ export function LeaderPage({
   // Handle Leader Login
   const handleUnlock = (e: React.FormEvent) => {
     e.preventDefault()
-    if (passcode.trim() === '100100') {
+    if (passcode.trim() === '1911') {
       setIsUnlocked(true)
       setAuthError('')
     } else {
-      setAuthError('كلمة المرور غير صحيحة! هذه اللوحة مخصصة لليدر فقط (100100).')
+      setAuthError('كلمة المرور غير صحيحة! هذه اللوحة مخصصة للقائد فقط.')
     }
   }
 
@@ -296,7 +296,7 @@ export function LeaderPage({
     )
   })
 
-  // 1. LOCKED VIEW: ENTER LEADER PASSWORD (100100)
+  // 1. LOCKED VIEW: ENTER LEADER PASSWORD (1911)
   if (!isUnlocked) {
     return (
       <div className="flex min-h-[70vh] items-center justify-center py-10 animate-in fade-in">

@@ -101,6 +101,15 @@ export function QuizzesPage({
       return
     }
 
+    // Check if already completed by user
+    const hasAlreadySubmitted = submissions.some(
+      (s) => s.quizId === quiz.id && s.userId === currentUser.id
+    )
+    if (hasAlreadySubmitted) {
+      alert('لقد قمت بحل هذه المسابقة بالفعل! لا يُسمح بإعادة الحل.')
+      return
+    }
+
     // Check if Question is Password Protected
     if (quiz.password && quiz.password.trim() !== '') {
       setPasswordModalQuiz(quiz)
@@ -394,22 +403,27 @@ export function QuizzesPage({
 
                 <div className="mt-5 pt-3 border-t border-slate-100">
                   <button
-                    disabled={!status.canPlay}
+                    disabled={!status.canPlay || isCompletedByUser}
                     onClick={() => handleInitiateQuiz(quiz)}
-                    className={`flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-xs font-black transition active:scale-95 ${
-                      status.canPlay
-                        ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 hover:bg-blue-700'
+                    className={`flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-xs font-black transition ${
+                      isCompletedByUser
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-not-allowed opacity-90'
+                        : status.canPlay
+                        ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 hover:bg-blue-700 active:scale-95'
                         : 'bg-slate-100 text-slate-400 cursor-not-allowed'
                     }`}
                   >
-                    {status.canPlay ? (
+                    {isCompletedByUser ? (
+                      <>
+                        <CheckCircle2 className="size-4 text-emerald-600" />
+                        <span>تم حل المسابقة بنجاح ✓</span>
+                      </>
+                    ) : status.canPlay ? (
                       <>
                         {quiz.password ? <KeyRound className="size-4" /> : <Play className="size-4" />}
                         <span>
                           {quiz.password
                             ? 'فتح السؤال (يتطلب باسورد)'
-                            : isCompletedByUser
-                            ? 'إعادة التحدي'
                             : 'ابدأ التحدي الآن'}
                         </span>
                       </>
@@ -614,11 +628,15 @@ export function QuizzesPage({
                   </div>
 
                   <h3 className="mt-4 text-2xl font-black text-white">
-                    {score > 0 ? 'عاش يا بطل! ⚜️' : 'حاول مرة أخرى!'}
+                    {score > 0 ? 'عاش يا بطل! ⚜️' : 'تم إنهاء التحدي!'}
                   </h3>
                   <p className="mt-1 text-sm text-blue-200">
                     أنجزت التحدي وحصلت على +{score} نقطة تمت إضافتها لرصيدك الكشفي!
                   </p>
+                  <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3.5 py-1 text-xs font-bold text-emerald-300 ring-1 ring-emerald-500/40">
+                    <CheckCircle2 className="size-3.5" />
+                    <span>تم تسجيل إجابتك بنجاح ولا يمكن إعادة الحل</span>
+                  </div>
 
                   {/* Answers review */}
                   <div className="mt-5 space-y-2 text-right max-h-60 overflow-y-auto">
@@ -677,19 +695,12 @@ export function QuizzesPage({
                     })}
                   </div>
 
-                  <div className="mt-6 flex justify-center gap-3">
+                  <div className="mt-6 flex justify-center">
                     <button
                       onClick={() => setActiveQuiz(null)}
-                      className="rounded-2xl bg-blue-600 px-6 py-3 text-xs font-black text-white hover:bg-blue-700 shadow-md"
+                      className="w-full sm:w-auto rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-3.5 text-xs font-black text-white hover:brightness-110 shadow-lg shadow-blue-600/30 active:scale-95 transition"
                     >
-                      العودة للمسابقات
-                    </button>
-                    <button
-                      onClick={() => startQuizDirectly(activeQuiz)}
-                      className="flex items-center gap-1.5 rounded-2xl bg-white/10 px-4 py-3 text-xs font-bold text-slate-200 hover:bg-white/20"
-                    >
-                      <RotateCcw className="size-3.5" />
-                      <span>إعادة المحاولة</span>
+                      العودة لقائمة المسابقات
                     </button>
                   </div>
                 </div>
